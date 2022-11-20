@@ -26,7 +26,7 @@ export class AuthService {
         if (!existUser) throw new BadRequestException(AppError.USER_NOT_EXIST);
         const validatePassword = await bcrypt.compare(dto.password, existUser.password);
         if(!validatePassword) throw new BadRequestException(AppError.WRONG_DATA);
-        const token = await this.tokenService.generateJwtToken(dto.email);
+        const token = await this.tokenService.generateJwtToken({id: existUser.id});
         const user = await this.userService.publicUser(dto.email);
         return {...user,token};
     }

@@ -2,7 +2,7 @@ import {BadRequestException, Injectable} from '@nestjs/common';
 import {InjectModel} from "@nestjs/sequelize";
 import {User} from "./models/user.model";
 import * as bcrypt from 'bcrypt';
-import {CreateUserDTO} from "./dto";
+import {CreateUserDTO, updateUserDTO} from "./dto";
 
 
 @Injectable()
@@ -39,7 +39,16 @@ export class UserService {
 
     }
 
-    findById(id: any) {
-        return Promise.resolve(undefined);
+    findById(id: number) {
+        return this.UserRepository.findByPk(id);
     }
+
+    async updateUser(id:number,dto:updateUserDTO){
+        return this.UserRepository.update(dto,{where: {id}});
+    }
+
+    async deleteUser(id:number){
+        return await this.UserRepository.destroy({where:{id}});
+    }
+
 }
